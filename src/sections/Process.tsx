@@ -51,6 +51,7 @@ export function Process(): ReactNode {
               <div className="process__marker" aria-hidden="true">
                 <span>{step.number}</span>
               </div>
+              <span className="process__turn" aria-hidden="true" />
               <div className="process__step-copy">
                 <p className="process__step-label">Етап {step.number}</p>
                 <h3 className="process__step-title">{step.title}</h3>

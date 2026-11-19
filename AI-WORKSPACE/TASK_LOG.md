@@ -130,3 +130,24 @@ Checks:
 - `npm run lint` — passed (exit code 0).
 - Browser responsive review — not performed in this task.
 - Change scope — verified with `git status`; only `src/App.tsx`, the two new Process files, and the three requested workspace documents were changed for this task.
+
+## 2026-11-19 — Visual QA follow-up
+
+Goal: correct the mobile menu icon stroke reset, Process tablet/mobile connectors, and small Portfolio preview labels; inspect Services and Portfolio card sizing without broad redesign.
+
+Files changed:
+
+- `src/sections/Hero.css` — added `.hero__menu-icon *` fill/stroke overrides so only the menu icon paths escape the global SVG reset.
+- `src/sections/Process.css` — added a serpentine 2×2 tablet order with horizontal links through the marker row and a downward connector confined to the row gap. The mobile guide position now uses the list top padding plus half the shared marker size, with a matching bottom calculation.
+- `src/sections/Process.tsx` — added a decorative connector element used only for the tablet row transition.
+- `src/sections/Portfolio.css` — increased the interior preview menu and fitness preview index text sizes without changing project copy.
+- `AI-WORKSPACE/PROJECT_MAP.md` — described the focused SVG, preview microcopy, and Process connector behavior.
+- `AI-WORKSPACE/HANDOFF.md` — recorded fixes and browser coverage limits.
+
+Checks:
+
+- `npx tsc --noEmit` — passed (exit code 0).
+- `npm run build` — passed; Vite production build completed.
+- `npm run lint` — passed (exit code 0).
+- Browser review — tablet layout was checked at about 864px wide. Process links did not cross stage text; Services and Portfolio cards appeared balanced, with no apparent overflow or forced empty height. The browser control did not provide exact mobile or desktop viewport resizing, so those sizes were not visually verified.
+- Scope — `git status` was checked; changes are limited to Hero/Process/Portfolio styles, Process markup, and the requested workspace documents.

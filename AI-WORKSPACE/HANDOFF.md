@@ -1,10 +1,10 @@
 # Handoff
 
-Updated 2026-11-19 after adding the Process section. TypeScript, production build, and lint pass. Exact responsive browser breakpoints were not checked in this task.
+Updated 2026-11-19 after visual QA fixes for menu SVG, Process connectors, and Portfolio preview microcopy. TypeScript, production build, and lint pass. Browser review was possible at about 864px wide; exact mobile and large desktop viewport checks were not available.
 
 ## Current state
 
-VYRA Studio is a Vite + React + TypeScript single page with a dark token set. `App` renders Hero, Services, Portfolio, then Process. Services has three service cards with inline SVG icons. Portfolio has three clearly labeled concept projects with distinct CSS/SVG previews. Process has four ordered steps and a timeline connector that switches from horizontal to vertical. The sections use responsive layouts and reduced-motion behavior.
+VYRA Studio is a Vite + React + TypeScript single page with a dark token set. `App` renders Hero, Services, Portfolio, then Process. Services has three service cards with inline SVG icons. Portfolio has three clearly labeled concept projects with distinct CSS/SVG previews. Process has four ordered steps with desktop, tablet 2×2, and mobile timeline treatments. The sections use responsive layouts and reduced-motion behavior.
 
 The hero shows the wordmark, four Ukrainian nav links, headline, supporting copy, abstract interface artwork, two Ukrainian calls to action, and a working mobile menu.
 
@@ -25,7 +25,8 @@ There is no Git repository in this folder, so file history cannot be recovered f
 - Services section at `#services` with Ukrainian copy, three offerings, custom line icons, and tablet/mobile responsive card layouts.
 - Portfolio section at `#portfolio` with three concept projects, distinct website preview compositions, Ukrainian descriptions, English categories and technology labels, and explicit “Концепт” badges.
 - Process section at `#process` with four Ukrainian stages and a connected, responsive timeline.
-- `dist/` exists from a previous `vite build`. This session did not rebuild it.
+- Mobile menu SVG paths explicitly restore their local stroke after the global SVG reset. Tablet Process connections route through marker space and row gaps; the mobile guide is mathematically aligned to marker centers. Portfolio concept preview microcopy has been enlarged.
+- `npm run build` completed after the visual QA fixes; `dist/` contains the generated production output.
 
 An earlier root `MEMORY.md` records these code edits: tokens moved inside `:root` after a lightningcss `SyntaxError: Invalid qualified rule`; the hero logo switched from SVG `<use>` to `<img>`; `ReactNode` imports changed to `import type`. Those edits match the current source. This session did not reproduce the old build error.
 
@@ -41,7 +42,7 @@ An earlier root `MEMORY.md` records these code edits: tokens moved inside `:root
 
 ## Known problems
 
-Found by reading the source. Not confirmed in a browser in this session.
+Remaining limitations and issues found by source review; the visual checks in this handoff were limited to the available 864px browser viewport.
 
 1. Hash target for the planned Contacts section does not exist yet.
 2. `className={\`hero ${className}\`}` becomes the class `hero undefined` when `className` is omitted. `App` omits it.
@@ -54,6 +55,6 @@ Found by reading the source. Not confirmed in a browser in this session.
 
 ## Next task
 
-Implement the planned Contact section and provide its matching anchor. Recheck all sections visually at specific desktop and mobile breakpoints when viewport controls are available.
+Implement the planned Contact section and provide its matching anchor. Recheck mobile menu, mobile Process guide, and card layouts at exact phone and desktop breakpoints when viewport controls are available.
 
 The open product gap visible in the code is the Contact section: navigation and the primary CTA point to `#contacts`, which does not exist yet.

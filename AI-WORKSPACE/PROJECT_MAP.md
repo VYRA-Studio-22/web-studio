@@ -48,13 +48,13 @@ Map of the repository as inspected on 2026-11-19. `node_modules/` and `dist/` ex
 | `styles/tokens.css` | Design tokens on `:root`. File comment still says "AI Web Studio Design Tokens". |
 | `styles/base.css` | Reset, document styles, button classes, container. File comment still says "AI Web Studio Base Styles". |
 | `sections/Hero.tsx` | Only page section: wordmark, nav, two CTA links, menu button. |
-| `sections/Hero.css` | Hero layout, grid background, nav, CTA, and mobile rules. |
+| `sections/Hero.css` | Hero layout, grid background, nav, CTA, mobile rules, and local menu SVG stroke overrides. |
 | `sections/Services.tsx` | Ukrainian Services section with three service cards and inline SVG icons. |
 | `sections/Services.css` | Responsive Services layout, card styles, hover and reduced-motion behavior. |
 | `sections/Portfolio.tsx` | Ukrainian Portfolio section with three clearly labeled fictional concepts and custom CSS/SVG previews. |
-| `sections/Portfolio.css` | Responsive project card grid, distinct concept compositions, hover and reduced-motion behavior. |
+| `sections/Portfolio.css` | Responsive project card grid, distinct concept compositions, readable preview microcopy, hover and reduced-motion behavior. |
 | `sections/Process.tsx` | Ukrainian Process section with four ordered project stages. |
-| `sections/Process.css` | Responsive process timeline with horizontal desktop and vertical mobile connectors. |
+| `sections/Process.css` | Responsive process timeline with horizontal desktop links, a tablet 2×2 path, and a mobile vertical connector centered on its markers. |
 | `assets/vyra-wordmark.svg` | Logo used by the hero `<img>`. Text "VYRA" and "DIGITAL STUDIO". |
 | `assets/vyra-logo.svg` | Geometric V mark. Not imported. |
 | `assets/hero.png` | Vite template isometric graphic. Not imported. |
