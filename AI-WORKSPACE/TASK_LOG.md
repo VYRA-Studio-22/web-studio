@@ -52,3 +52,23 @@ Checks:
 - `npm run build` and `npm run lint` were not run.
 - The page was not opened in a browser.
 - No Git status, because the folder is not a Git repository.
+
+## 2026-11-19 — QA fixes for the hero
+
+Goal: address the confirmed typography, mobile CTA/menu, hover, focus behavior, and future section link issues without changing the visual direction.
+
+Files changed:
+
+- `index.html` — added Google Fonts preconnects and stylesheet for Manrope and Inter; CSS token stacks retain `system-ui, sans-serif` fallbacks.
+- `src/sections/Hero.tsx` — removed focus-out auto-close and body scroll locking from the non-modal mobile menu. Existing Escape, outside pointer, link activation, focus-on-open, and Escape focus return behavior remain. Navigation and CTA destinations consistently point to named future section IDs; no empty targets were created.
+- `src/sections/Hero.css` — H1 line-height is 1.18, mobile CTA buttons are 52px tall, mobile menu and burger borders use `--color-border`.
+- `src/styles/base.css` — simplified button hover to `opacity: 0.95`.
+- `AI-WORKSPACE/HANDOFF.md` — current status, remaining section destinations, and browser verification limitation.
+
+Checks:
+
+- `npx tsc --noEmit` — passed (exit code 0).
+- `npm run build` — passed; Vite production build completed.
+- `npm run lint` — passed (exit code 0).
+- Browser responsive check at 1440, 1280, 768, 390, and 360px — not completed. The in-app browser timed out opening `http://127.0.0.1:5173/`; no visual layout claim is made.
+- Link scan — brand points to existing `#hero`; navigation/CTAs point to the planned `#services`, `#portfolio`, `#process`, `#contacts`. Only `#hero` currently exists; planned section targets await their sections.
