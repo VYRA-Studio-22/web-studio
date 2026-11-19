@@ -42,13 +42,15 @@ Map of the repository as inspected on 2026-11-19. `node_modules/` and `dist/` ex
 | File | Role |
 | --- | --- |
 | `main.tsx` | React entry. Imports `./index.css` and renders `<App />` in `StrictMode`. |
-| `App.tsx` | Renders `<Hero />` only. |
+| `App.tsx` | Composes `<Hero />` followed by `<Services />`. |
 | `App.css` | Vite template styles. Not imported. |
 | `index.css` | Imports `styles/tokens.css` and `styles/base.css`. |
 | `styles/tokens.css` | Design tokens on `:root`. File comment still says "AI Web Studio Design Tokens". |
 | `styles/base.css` | Reset, document styles, button classes, container. File comment still says "AI Web Studio Base Styles". |
 | `sections/Hero.tsx` | Only page section: wordmark, nav, two CTA links, menu button. |
 | `sections/Hero.css` | Hero layout, grid background, nav, CTA, and mobile rules. |
+| `sections/Services.tsx` | Ukrainian Services section with three service cards and inline SVG icons. |
+| `sections/Services.css` | Responsive Services layout, card styles, hover and reduced-motion behavior. |
 | `assets/vyra-wordmark.svg` | Logo used by the hero `<img>`. Text "VYRA" and "DIGITAL STUDIO". |
 | `assets/vyra-logo.svg` | Geometric V mark. Not imported. |
 | `assets/hero.png` | Vite template isometric graphic. Not imported. |
@@ -72,4 +74,8 @@ Rendered content:
 
 `aria-label` values on the section and buttons are English. Visible link text is Ukrainian.
 
-No other section components exist. The folders `src/components/` and `src/hooks/` from the earlier planned map were not created.
+### `Services`
+
+`src/sections/Services.tsx` exports `Services`, with styling in `src/sections/Services.css`. It renders `#services` with Landing Pages, Business Websites, and Website Redesign cards. Inline SVG line icons require no external images or dependencies.
+
+The folders `src/components/` and `src/hooks/` from the earlier planned map were not created.

@@ -72,3 +72,22 @@ Checks:
 - `npm run lint` — passed (exit code 0).
 - Browser responsive check at 1440, 1280, 768, 390, and 360px — not completed. The in-app browser timed out opening `http://127.0.0.1:5173/`; no visual layout claim is made.
 - Link scan — brand points to existing `#hero`; navigation/CTAs point to the planned `#services`, `#portfolio`, `#process`, `#contacts`. Only `#hero` currently exists; planned section targets await their sections.
+
+## 2026-11-19 — Services section
+
+Goal: add the responsive Ukrainian Services section using the existing tokens and visual language, without creating other sections.
+
+Files changed:
+
+- `src/sections/Services.tsx` — added the `#services` section, requested heading and description, three service cards, and original inline SVG line icons.
+- `src/sections/Services.css` — added desktop three-column cards, tablet/mobile stacked cards, restrained hover states, and reduced-motion support. Reconciled inline icon styles with the existing global SVG reset after browser review showed filled icons.
+- `src/App.tsx` — renders Services after Hero; there is no nested `<main>`.
+- `AI-WORKSPACE/PROJECT_MAP.md` — documented the new section and App composition.
+- `AI-WORKSPACE/HANDOFF.md` — updated current page status, implemented sections, checks, and remaining gaps.
+
+Checks:
+
+- `npx tsc --noEmit` — passed (exit code 0).
+- `npm run build` — passed; Vite production build completed.
+- `npm run lint` — passed (exit code 0).
+- Browser preview — opened successfully. Verified content hierarchy, three cards, and custom line icons at the available viewport (about 864px wide). The browser tool did not expose viewport controls, so exact 1440/1280/768/390/360 checks were unavailable.
