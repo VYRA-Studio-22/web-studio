@@ -1,0 +1,9 @@
+<!-- VYRA Studio Wordmark -->
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="36" viewBox="0 0 120 36" fill="currentColor">
+  <text x="0" y="26" font-family="Inter, system-ui, sans-serif" font-size="24" font-weight="600" letter-spacing="-0.02em">
+    VYRA
+  </text>
+  <text x="0" y="4" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="400" letter-spacing="0.15em" fill="#A5B0A5">
+    DIGITAL STUDIO
+  </text>
+</svg>

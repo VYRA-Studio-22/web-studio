@@ -1,0 +1,6 @@
+/*
+  Design system imports — do not modify these rules.
+  Tokens and base styles are defined in src/styles/tokens.css and src/styles/base.css.
+*/
+@import "./styles/tokens.css";
+@import "./styles/base.css";

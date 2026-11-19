@@ -1,0 +1,110 @@
+/* ==========================================
+   AI Web Studio Design Tokens — Premium Dark
+   Single source of truth for colors, typography,
+   spacing, and interface variables.
+   ========================================== */
+:root {
+  /* =========================
+     Colors
+     ========================= */
+  --color-bg-primary: #080D0A;
+  --color-bg-secondary: #0D130F;
+  --color-bg-card: #111A13;
+  --color-accent: #B5F477;
+  --color-accent-hover: #A3E86B;
+  --color-text-primary: #F4F7F2;
+  --color-text-secondary: #A5B0A5;
+  --color-border: #263229;
+  --color-border-subtle: rgba(255, 255, 255, 0.06);
+  --color-white: #FFFFFF;
+
+  /* =========================
+     Typography
+     ========================= */
+  /* Font families */
+  --font-family-serif: 'Manrope', system-ui, sans-serif;
+  --font-family-body: 'Inter', system-ui, sans-serif;
+
+  /* Font sizes (clamp-based responsive) */
+  --font-size-xs: 0.75rem;      /* 12px */
+  --font-size-sm: 0.875rem;     /* 14px */
+  --font-size-base: 1rem;       /* 16px */
+  --font-size-lg: 1.125rem;     /* 18px */
+  --font-size-xl: 1.25rem;      /* 20px */
+  --font-size-2xl: 1.5rem;      /* 24px */
+  --font-size-3xl: 2rem;        /* 32px */
+  --font-size-4xl: 2.5rem;      /* 40px */
+  --font-size-5xl: 3rem;        /* 48px */
+  --font-size-6xl: 3.75rem;     /* 60px */
+
+  /* Font weights */
+  --font-weight-thin: 100;
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Line heights */
+  --line-height-tight: 1.2;
+  --line-height-base: 1.6;
+  --line-height-relaxed: 1.8;
+
+  /* =========================
+     Spacing Scale (4px base)
+     ========================= */
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.25rem;   /* 20px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-8: 2rem;      /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+
+  /* =========================
+     Border Radius
+     ========================= */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-full: 9999px;
+
+  /* =========================
+     Shadows
+     ========================= */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 1px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.5), 0 4px 8px rgba(0, 0, 0, 0.3);
+  --shadow-inset: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+
+  /* =========================
+     Transition Durations
+     ========================= */
+  --transition-fast: 150ms ease var(--transition-type);
+  --transition-base: 250ms ease var(--transition-type);
+  --transition-slow: 350ms ease var(--transition-type);
+
+  /* Transition type for reuse */
+  --transition-type: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* =========================
+     Container / Layout
+     ========================= */
+  --container-max: 1200px;
+  --container-padding: var(--space-6);
+
+  /* =========================
+     Responsive Breakpoints
+     ========================= */
+  --breakpoint-sm: 640px;   /* mobile -> tablet */
+  --breakpoint-md: 768px;   /* tablet -> desktop */
+  --breakpoint-lg: 1024px;  /* desktop -> large */
+  --breakpoint-xl: 1280px;  /* large screens */
+
+  /* =========================
+     Reduced Motion
+     ========================= */
+  --reduced-motion: reduce;
+}
