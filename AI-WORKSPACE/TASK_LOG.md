@@ -110,3 +110,23 @@ Checks:
 - `npm run build` — passed; Vite production build completed.
 - `npm run lint` — passed (exit code 0).
 - Browser preview — opened successfully. Reviewed all three cards and their project preview compositions at about 864px wide. The browser tool does not expose viewport resizing; exact breakpoint checks were unavailable.
+
+## 2026-11-19 — Process section
+
+Goal: add an adaptive four-step Process timeline and connect it after Portfolio.
+
+Files changed:
+
+- `src/sections/Process.tsx` — added `#process`, the requested Ukrainian heading and intro, and four ordered stage descriptions in an accessible ordered list.
+- `src/sections/Process.css` — added a horizontal four-step desktop timeline, tablet two-column transition, mobile vertical timeline, hover feedback, and reduced-motion handling using existing tokens.
+- `src/App.tsx` — renders Process after Portfolio.
+- `AI-WORKSPACE/PROJECT_MAP.md` — documented the new component and App composition.
+- `AI-WORKSPACE/HANDOFF.md` — updated implemented sections and the remaining Contact gap.
+
+Checks:
+
+- `npx tsc --noEmit` — passed (exit code 0).
+- `npm run build` — passed; Vite production build completed.
+- `npm run lint` — passed (exit code 0).
+- Browser responsive review — not performed in this task.
+- Change scope — verified with `git status`; only `src/App.tsx`, the two new Process files, and the three requested workspace documents were changed for this task.
