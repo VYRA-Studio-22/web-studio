@@ -91,3 +91,22 @@ Checks:
 - `npm run build` — passed; Vite production build completed.
 - `npm run lint` — passed (exit code 0).
 - Browser preview — opened successfully. Verified content hierarchy, three cards, and custom line icons at the available viewport (about 864px wide). The browser tool did not expose viewport controls, so exact 1440/1280/768/390/360 checks were unavailable.
+
+## 2026-11-19 — Portfolio section
+
+Goal: add an adaptive Portfolio section with three fictional concepts, distinct visual treatments, and clear concept labeling.
+
+Files changed:
+
+- `src/sections/Portfolio.tsx` — added `#portfolio`, requested Ukrainian heading and intro, three concept cards with the specified names/categories/descriptions/technologies, and distinct in-page previews. Each preview is labeled “Концепт”.
+- `src/sections/Portfolio.css` — added responsive three-column wide layout, stacked mobile layout, CSS/SVG preview compositions, hover states, and reduced-motion support.
+- `src/App.tsx` — renders Portfolio after Services.
+- `AI-WORKSPACE/PROJECT_MAP.md` — documented Portfolio files and App composition.
+- `AI-WORKSPACE/HANDOFF.md` — updated implemented sections, remaining anchors, and verification status.
+
+Checks:
+
+- `npx tsc --noEmit` — passed (exit code 0).
+- `npm run build` — passed; Vite production build completed.
+- `npm run lint` — passed (exit code 0).
+- Browser preview — opened successfully. Reviewed all three cards and their project preview compositions at about 864px wide. The browser tool does not expose viewport resizing; exact breakpoint checks were unavailable.

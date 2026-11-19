@@ -42,7 +42,7 @@ Map of the repository as inspected on 2026-11-19. `node_modules/` and `dist/` ex
 | File | Role |
 | --- | --- |
 | `main.tsx` | React entry. Imports `./index.css` and renders `<App />` in `StrictMode`. |
-| `App.tsx` | Composes `<Hero />` followed by `<Services />`. |
+| `App.tsx` | Composes `<Hero />`, `<Services />`, then `<Portfolio />`. |
 | `App.css` | Vite template styles. Not imported. |
 | `index.css` | Imports `styles/tokens.css` and `styles/base.css`. |
 | `styles/tokens.css` | Design tokens on `:root`. File comment still says "AI Web Studio Design Tokens". |
@@ -51,6 +51,8 @@ Map of the repository as inspected on 2026-11-19. `node_modules/` and `dist/` ex
 | `sections/Hero.css` | Hero layout, grid background, nav, CTA, and mobile rules. |
 | `sections/Services.tsx` | Ukrainian Services section with three service cards and inline SVG icons. |
 | `sections/Services.css` | Responsive Services layout, card styles, hover and reduced-motion behavior. |
+| `sections/Portfolio.tsx` | Ukrainian Portfolio section with three clearly labeled fictional concepts and custom CSS/SVG previews. |
+| `sections/Portfolio.css` | Responsive project card grid, distinct concept compositions, hover and reduced-motion behavior. |
 | `assets/vyra-wordmark.svg` | Logo used by the hero `<img>`. Text "VYRA" and "DIGITAL STUDIO". |
 | `assets/vyra-logo.svg` | Geometric V mark. Not imported. |
 | `assets/hero.png` | Vite template isometric graphic. Not imported. |
@@ -77,5 +79,9 @@ Rendered content:
 ### `Services`
 
 `src/sections/Services.tsx` exports `Services`, with styling in `src/sections/Services.css`. It renders `#services` with Landing Pages, Business Websites, and Website Redesign cards. Inline SVG line icons require no external images or dependencies.
+
+### `Portfolio`
+
+`src/sections/Portfolio.tsx` exports `Portfolio`, with styling in `src/sections/Portfolio.css`. It renders `#portfolio` with three explicitly labeled concept projects, each with its own CSS/SVG website preview. The examples do not claim real clients or business results.
 
 The folders `src/components/` and `src/hooks/` from the earlier planned map were not created.

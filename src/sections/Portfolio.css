@@ -1,0 +1,600 @@
+.portfolio {
+  padding: clamp(4.5rem, 9vw, 7.5rem) var(--container-padding);
+  background: var(--color-bg-primary);
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.portfolio__container {
+  width: min(100%, var(--container-max));
+  margin-inline: auto;
+}
+
+.portfolio__header {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(16rem, 0.8fr);
+  align-items: end;
+  gap: clamp(2rem, 6vw, 5rem);
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+
+.portfolio__eyebrow {
+  margin-bottom: var(--space-4);
+  color: var(--color-accent);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.16em;
+  line-height: var(--line-height-base);
+  text-transform: uppercase;
+}
+
+.portfolio__title {
+  max-width: 16ch;
+  font-size: clamp(2rem, 1.15rem + 2.8vw, var(--font-size-5xl));
+  letter-spacing: -0.04em;
+  line-height: 1.12;
+  text-wrap: balance;
+}
+
+.portfolio__intro {
+  max-width: 29rem;
+  margin: 0 0 var(--space-1);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-relaxed);
+}
+
+.portfolio__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-5);
+}
+
+.portfolio__card {
+  min-width: 0;
+  overflow: hidden;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  transition: border-color var(--transition-base), transform var(--transition-base);
+}
+
+.portfolio__card:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--color-accent) 42%, var(--color-border));
+}
+
+.portfolio__preview {
+  position: relative;
+  padding: var(--space-3);
+  overflow: hidden;
+  background: var(--color-bg-secondary);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.portfolio__mock {
+  position: relative;
+  aspect-ratio: 1.48;
+  overflow: hidden;
+  color: var(--color-text-primary);
+  transition: transform var(--transition-slow);
+}
+
+.portfolio__card:hover .portfolio__mock {
+  transform: scale(1.025);
+}
+
+.portfolio__mock-nav {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 2.5rem;
+  padding: 0.65rem 0.85rem;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+}
+
+.portfolio__mock-brand,
+.portfolio__interior-brand,
+.portfolio__fitness-brand {
+  font-size: 0.6rem;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.1em;
+}
+
+.portfolio__mock-brand span {
+  color: var(--color-accent);
+}
+
+.portfolio__mock-menu {
+  display: grid;
+  gap: 3px;
+  width: 1rem;
+}
+
+.portfolio__mock-menu i {
+  height: 1px;
+  background: currentColor;
+  opacity: 0.7;
+}
+
+.portfolio__auto {
+  font-size: 1rem;
+}
+
+.portfolio__mock--auto {
+  background-color: #101713;
+  background-image: linear-gradient(rgba(181, 244, 119, 0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(181, 244, 119, 0.045) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.portfolio__auto-layout {
+  position: relative;
+  min-height: 9.3rem;
+  padding: 1rem 0.9rem 1.7rem;
+}
+
+.portfolio__auto-copy {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  justify-items: start;
+  gap: 0.55rem;
+}
+
+.portfolio__mock-overline {
+  color: var(--color-accent);
+  font-size: 0.42rem;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.13em;
+}
+
+.portfolio__auto-title {
+  font-size: clamp(0.85rem, 1.3vw, 1.15rem);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+}
+
+.portfolio__mock-button {
+  display: inline-flex;
+  gap: 0.7rem;
+  align-items: center;
+  padding: 0.35rem 0.5rem;
+  color: var(--color-bg-primary);
+  background: var(--color-accent);
+  border-radius: 3px;
+  font-size: 0.4rem;
+  font-weight: var(--font-weight-semibold);
+}
+
+.portfolio__mock-button b {
+  font-size: 0.55rem;
+}
+
+.portfolio__car {
+  position: absolute;
+  right: 0.45rem;
+  bottom: 0.45rem;
+  width: 58%;
+  color: var(--color-accent);
+  opacity: 0.85;
+}
+
+.portfolio__car * {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.portfolio__auto-footer,
+.portfolio__interior-caption {
+  position: absolute;
+  right: 0.85rem;
+  bottom: 0.65rem;
+  left: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--color-text-secondary);
+  font-size: 0.38rem;
+  letter-spacing: 0.07em;
+}
+
+.portfolio__auto-footer span:nth-child(2) {
+  width: 1rem;
+  height: 1px;
+  background: var(--color-accent);
+}
+
+.portfolio__auto-footer span:last-child {
+  margin-left: auto;
+}
+
+.portfolio__mock--interior {
+  color: #27271f;
+  background: #d5d0c5;
+}
+
+.portfolio__interior-brand span {
+  color: #777469;
+  font-weight: var(--font-weight-normal);
+}
+
+.portfolio__interior-menu {
+  font-size: 0.36rem;
+  letter-spacing: 0.07em;
+}
+
+.portfolio__interior-layout {
+  position: relative;
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  min-height: 10rem;
+  padding: 1.1rem 0.85rem 1.4rem;
+}
+
+.portfolio__interior-copy {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.7rem;
+}
+
+.portfolio__interior-copy .portfolio__mock-overline {
+  color: #6c7258;
+}
+
+.portfolio__interior-title {
+  font-family: var(--font-family-serif);
+  font-size: clamp(1.15rem, 2vw, 1.75rem);
+  line-height: 0.96;
+  letter-spacing: -0.06em;
+}
+
+.portfolio__interior-link {
+  margin-top: auto;
+  font-size: 0.42rem;
+}
+
+.portfolio__interior-link b {
+  margin-left: 0.35rem;
+  color: #6c7258;
+}
+
+.portfolio__interior-art {
+  position: relative;
+  min-height: 8rem;
+  overflow: hidden;
+  background: #b8ad9b;
+}
+
+.portfolio__interior-arch {
+  position: absolute;
+  top: 16%;
+  right: 17%;
+  bottom: -18%;
+  width: 52%;
+  border: 1px solid rgba(39, 39, 31, 0.5);
+  border-bottom: 0;
+  border-radius: 50% 50% 0 0;
+}
+
+.portfolio__interior-arch span {
+  position: absolute;
+  inset: 13% 12% 0;
+  background: #d8cbb7;
+  border-radius: 50% 50% 0 0;
+}
+
+.portfolio__interior-sun {
+  position: absolute;
+  top: 15%;
+  right: 12%;
+  width: 1.3rem;
+  height: 1.3rem;
+  background: #d4c276;
+  border-radius: 50%;
+}
+
+.portfolio__interior-plinth {
+  position: absolute;
+  right: 5%;
+  bottom: 0;
+  left: 4%;
+  height: 16%;
+  background: #8f8879;
+}
+
+.portfolio__interior-caption {
+  color: #777469;
+  justify-content: space-between;
+}
+
+.portfolio__mock--fitness {
+  color: var(--color-text-primary);
+  background: #172019;
+}
+
+.portfolio__fitness-brand span {
+  color: var(--color-accent);
+  font-weight: var(--font-weight-normal);
+}
+
+.portfolio__fitness-menu {
+  font-size: 0.36rem;
+  letter-spacing: 0.07em;
+}
+
+.portfolio__fitness-layout {
+  position: relative;
+  display: flex;
+  min-height: 10rem;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 0.8rem 1rem 1rem;
+  overflow: hidden;
+}
+
+.portfolio__fitness-layout::after {
+  position: absolute;
+  top: -45%;
+  right: -14%;
+  width: 65%;
+  aspect-ratio: 1;
+  border: 1px solid rgba(181, 244, 119, 0.22);
+  border-radius: 50%;
+  content: '';
+}
+
+.portfolio__fitness-kicker {
+  z-index: 1;
+  color: var(--color-accent);
+  font-size: 0.43rem;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.17em;
+}
+
+.portfolio__fitness-title {
+  position: relative;
+  z-index: 1;
+  margin-top: 0.45rem;
+  font-size: clamp(1.5rem, 2.6vw, 2.5rem);
+  font-weight: var(--font-weight-bold);
+  line-height: 0.82;
+  letter-spacing: -0.08em;
+}
+
+.portfolio__fitness-title span {
+  color: var(--color-accent);
+}
+
+.portfolio__fitness-bottom {
+  z-index: 1;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1rem;
+  color: var(--color-text-secondary);
+  font-size: 0.4rem;
+  letter-spacing: 0.13em;
+}
+
+.portfolio__fitness-bottom i {
+  font-style: normal;
+}
+
+.portfolio__fitness-bottom b {
+  display: grid;
+  width: 1.3rem;
+  height: 1.3rem;
+  place-items: center;
+  color: var(--color-bg-primary);
+  background: var(--color-accent);
+  border-radius: 50%;
+  font-size: 0.7rem;
+}
+
+.portfolio__fitness-mark {
+  position: absolute;
+  top: 3%;
+  right: -6%;
+  width: 45%;
+  color: var(--color-accent);
+  opacity: 0.5;
+}
+
+.portfolio__fitness-mark * {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1;
+}
+
+.portfolio__fitness-index {
+  position: absolute;
+  right: 0.85rem;
+  bottom: 0.65rem;
+  left: 0.85rem;
+  color: var(--color-text-secondary);
+  font-size: 0.36rem;
+  letter-spacing: 0.11em;
+}
+
+.portfolio__concept {
+  position: absolute;
+  z-index: 3;
+  top: var(--space-5);
+  right: var(--space-5);
+  padding: 0.38rem 0.6rem;
+  color: var(--color-bg-primary);
+  background: var(--color-accent);
+  border-radius: var(--radius-full);
+  font-size: 0.65rem;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.03em;
+}
+
+.portfolio__card-body {
+  padding: var(--space-5) var(--space-5) var(--space-6);
+}
+
+.portfolio__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.portfolio__category,
+.portfolio__number {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+}
+
+.portfolio__category {
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.portfolio__number {
+  color: color-mix(in srgb, var(--color-text-secondary) 75%, transparent);
+  font-variant-numeric: tabular-nums;
+}
+
+.portfolio__project-title {
+  margin-bottom: var(--space-3);
+  font-size: var(--font-size-xl);
+  letter-spacing: -0.025em;
+  line-height: 1.25;
+}
+
+.portfolio__description {
+  min-height: 5.2rem;
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
+}
+
+.portfolio__tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-5);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+}
+
+.portfolio__tech li {
+  padding: 0.3rem 0.55rem;
+  color: var(--color-text-secondary);
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  font-size: 0.68rem;
+  line-height: 1.2;
+}
+
+@media (max-width: 1024px) {
+  .portfolio__grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  .portfolio__card {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  }
+
+  .portfolio__preview {
+    display: flex;
+    align-items: center;
+    border-right: 1px solid var(--color-border);
+    border-bottom: 0;
+  }
+
+  .portfolio__mock {
+    width: 100%;
+  }
+
+  .portfolio__concept {
+    top: var(--space-4);
+    right: var(--space-4);
+  }
+
+  .portfolio__description {
+    min-height: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .portfolio {
+    padding: var(--space-12) var(--space-4);
+  }
+
+  .portfolio__header {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    margin-bottom: var(--space-8);
+  }
+
+  .portfolio__title {
+    max-width: 13ch;
+    font-size: clamp(2rem, 8vw, var(--font-size-4xl));
+  }
+
+  .portfolio__intro {
+    max-width: 35rem;
+    font-size: var(--font-size-base);
+  }
+
+  .portfolio__card {
+    display: block;
+  }
+
+  .portfolio__preview {
+    display: block;
+    border-right: 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .portfolio__mock {
+    aspect-ratio: 1.42;
+  }
+
+  .portfolio__card-body {
+    padding: var(--space-4);
+  }
+
+  .portfolio__project-title {
+    font-size: var(--font-size-lg);
+  }
+
+  .portfolio__description {
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+  }
+
+  .portfolio__tech {
+    margin-top: var(--space-4);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portfolio__card,
+  .portfolio__mock {
+    transition: none;
+  }
+
+  .portfolio__card:hover,
+  .portfolio__card:hover .portfolio__mock {
+    transform: none;
+  }
+}
