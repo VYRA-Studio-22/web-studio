@@ -1,6 +1,6 @@
 # Project map
 
-Map of the repository as inspected on 2026-11-19. `node_modules/` and `dist/` exist on disk. `dist/` is a previous production build output and is gitignored. There is no `.git` directory.
+Map of the repository as inspected on 2026-11-19. `node_modules/` and `dist/` exist on disk. `dist/` is generated build output and is gitignored.
 
 ## Root
 
@@ -42,7 +42,7 @@ Map of the repository as inspected on 2026-11-19. `node_modules/` and `dist/` ex
 | File | Role |
 | --- | --- |
 | `main.tsx` | React entry. Imports `./index.css` and renders `<App />` in `StrictMode`. |
-| `App.tsx` | Composes `<Hero />`, `<Services />`, `<Portfolio />`, then `<Process />`. |
+| `App.tsx` | Composes `<Hero />`, `<Services />`, `<Portfolio />`, `<Process />`, `<Contacts />`, and `<Footer />` in page order. |
 | `App.css` | Vite template styles. Not imported. |
 | `index.css` | Imports `styles/tokens.css` and `styles/base.css`. |
 | `styles/tokens.css` | Design tokens on `:root`. File comment still says "AI Web Studio Design Tokens". |
@@ -55,6 +55,10 @@ Map of the repository as inspected on 2026-11-19. `node_modules/` and `dist/` ex
 | `sections/Portfolio.css` | Responsive project card grid, distinct concept compositions, readable preview microcopy, hover and reduced-motion behavior. |
 | `sections/Process.tsx` | Ukrainian Process section with four ordered project stages. |
 | `sections/Process.css` | Responsive process timeline with horizontal desktop links, a tablet 2×2 path, and a mobile vertical connector centered on its markers. |
+| `sections/Contacts.tsx` | Ukrainian contact section with `#contacts`, email `mailto:` links, and a visual placeholder describing the future form; no form submission behavior. |
+| `sections/Contacts.css` | Responsive two-column desktop contact layout, stacked mobile layout, panel, focus styles, and reduced-motion support using shared tokens. |
+| `sections/Footer.tsx` | Site footer with existing VYRA wordmark, links to all page sections, contact email, and current year. |
+| `sections/Footer.css` | Responsive footer layout, link hover/focus states, and shared token styling. |
 | `assets/vyra-wordmark.svg` | Logo used by the hero `<img>`. Text "VYRA" and "DIGITAL STUDIO". |
 | `assets/vyra-logo.svg` | Geometric V mark. Not imported. |
 | `assets/hero.png` | Vite template isometric graphic. Not imported. |
@@ -73,8 +77,8 @@ Rendered content:
 
 - `<img>` of the wordmark, alt text "VYRA Studio".
 - Nav links: Послуги `#services`, Портфоліо `#portfolio`, Процес `#process`, Контакти `#contacts`.
-- Links: "Обговорити проєкт" to `#contact`, "Переглянути роботи" to `#portfolio`.
-- A `<button class="hero__menu-toggle">` with a hamburger SVG. It has no event handler.
+- Links: "Обговорити проєкт" to `#contacts`, "Переглянути роботи" to `#portfolio`.
+- A `<button class="hero__menu-toggle">` with a hamburger SVG and working mobile menu behavior.
 
 `aria-label` values on the section and buttons are English. Visible link text is Ukrainian.
 
@@ -91,3 +95,9 @@ The folders `src/components/` and `src/hooks/` from the earlier planned map were
 ### `Process`
 
 `src/sections/Process.tsx` exports `Process`, with styling in `src/sections/Process.css`. It renders `#process` as four sequential stages. CSS draws the timeline connectors and adapts the layout from a horizontal desktop row to a vertical mobile timeline.
+
+### `Contacts` and `Footer`
+
+`src/sections/Contacts.tsx` exports `Contacts`, with paired `Contacts.css`. It renders `#contacts`, contact details, and a clearly identified visual area reserved for a future application form. Email links use `mailto:vyrastudio2@gmail.com`; there is currently no form or submission logic.
+
+`src/sections/Footer.tsx` exports `Footer`, with paired `Footer.css`. It uses the existing VYRA wordmark, links to `#hero`, `#services`, `#portfolio`, `#process`, and `#contacts`, and computes the current year at module load.

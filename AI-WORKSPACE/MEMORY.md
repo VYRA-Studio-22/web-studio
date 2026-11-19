@@ -10,9 +10,7 @@ Visible product name: **VYRA Studio**.
 
 The npm package name in `package.json` is `ai-web-studio`, version `0.0.0`, `"private": true`. The repository folder is `ai-web-studio`.
 
-An earlier `AI-WORKSPACE/MEMORY.md` described the project as the first commercial web-development portfolio for the Ukrainian market, meant to attract real clients. That purpose is **not** written in the current page copy. The hero has a logo, navigation, and two calls to action, and no explanatory text.
-
-A fuller business description, service list, and positioning are unknown from the current UI.
+The current page presents a digital studio, its services, portfolio concepts, work process, and contact details. The copy invites prospective clients to discuss a project. The email shown in Contacts and Footer is `vyrastudio2@gmail.com`.
 
 ## Target audience
 
@@ -46,7 +44,7 @@ Not present in the source:
 - A component library
 - A test runner
 - Environment files or API clients
-- A Git repository (no `.git` directory on 2026-11-19)
+- Git metadata and remotes are present in the current workspace.
 - A deployment config file
 
 An earlier memory file said deployment was planned on Cloudflare Pages. No Cloudflare config is in the repository. Whether that plan still stands is unknown.
@@ -89,7 +87,7 @@ Font tokens:
 - `--font-family-serif`: `'Manrope', system-ui, sans-serif` — used for headings in `base.css`. The token name says serif; the stack is Manrope, which is not a serif family.
 - `--font-family-body`: `'Inter', system-ui, sans-serif` — used for `body`, buttons, hero navigation, and the wordmark SVG.
 
-`index.html` does not load a font stylesheet. The repository has no `@font-face` files. If Manrope and Inter are not installed on the visitor's system, the browser falls back to `system-ui, sans-serif`. Whether that is intentional is unknown.
+`index.html` loads Manrope and Inter using the Google Fonts stylesheet, with `system-ui, sans-serif` fallbacks in the CSS tokens.
 
 Other recorded scales in `tokens.css`: font sizes `--font-size-xs` through `--font-size-6xl`, weights 100–700, line heights `1.2` / `1.6` / `1.8`, spacing `--space-1` through `--space-12` (4px base), radii `4px` / `6px` / `8px` / `9999px`, shadows, transitions `150ms` / `250ms` / `350ms` with `cubic-bezier(0.4, 0, 0.2, 1)`, container max `1200px`, breakpoints `640` / `768` / `1024` / `1280`. `--space-16` is used in `Hero.css` and is not defined. Weight 500 is named `--font-medium`, not `--font-weight-medium`.
 
@@ -97,15 +95,15 @@ Other recorded scales in `tokens.css`: font sizes `--font-size-xs` through `--fo
 
 Observed in the current code:
 
-- Single-page React app. `index.html` mounts `/src/main.tsx`. `main.tsx` renders `<App />` in `StrictMode`. `App` returns only `<Hero />`.
-- One section component exists: `src/sections/Hero.tsx` with `src/sections/Hero.css`.
+- Single-page React app. `index.html` mounts `/src/main.tsx`. `main.tsx` renders `<App />` in `StrictMode`. `App` composes Hero, Services, Portfolio, Process, Contacts, and Footer in that order.
+- Each page section has a component and a paired stylesheet in `src/sections/`.
 - Styling is global CSS custom properties plus section CSS. No CSS modules and no CSS-in-JS.
 - `tsconfig.app.json` uses `verbatimModuleSyntax`, `moduleResolution: "bundler"`, `jsx: "react-jsx"`, `noUnusedLocals`, and `noUnusedParameters`. It does not set `"strict": true`. `erasableSyntaxOnly` is enabled, so `import type` is required for type-only imports. An earlier root `MEMORY.md` called related edits "TypeScript Strict Mode"; that was a description of those edits, not the `strict` compiler flag.
 - The hero logo is an `<img>` of `src/assets/vyra-wordmark.svg`. An earlier note says this replaced an SVG `<use>` because of a display problem. This session did not compare the old markup.
-- Navigation and calls to action are anchor links. No click handlers and no shared button component are implemented. `base.css` still defines `.btn` classes, and the hero anchors use them.
+- Navigation and calls to action are in-page anchor links; the contact email uses `mailto:`. No shared button component is implemented. `base.css` defines `.btn` classes used by Hero.
 - `public/favicon.svg` is the icon linked from `index.html`. `src/assets/vyra-logo.svg` is a similar geometric mark and is not imported.
 
-Planned earlier, and **not** present as folders or components: `src/components/`, `src/hooks/`, and sections About, Services, Portfolio, Process, Contact, and Footer. The hero navigation already links to `#services`, `#portfolio`, `#process`, and `#contacts`.
+Not present: `src/components/`, `src/hooks/`, About section, request form, backend/API client, and routes. Implemented section targets are `#hero`, `#services`, `#portfolio`, `#process`, and `#contacts`.
 
 ## Accepted constraints
 
@@ -119,4 +117,4 @@ From the current agent rules and the earlier project notes that are still in for
 - Do not add unused dependencies.
 - Do not expose secrets.
 - Do not report a verification that was not actually run.
-- An earlier memory file also recorded: quality over speed, no unnecessary complexity, mobile-first responsiveness, and real functionality rather than decorative controls. Those principles are not encoded in the source. The current hero menu button and hash links do not yet meet the "real functionality" note; see `HANDOFF.md`.
+- Contacts currently provides direct email contact and an explicitly marked visual area reserved for a future request form. It does not collect or submit form data.

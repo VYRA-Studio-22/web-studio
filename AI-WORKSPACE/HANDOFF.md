@@ -1,60 +1,33 @@
 # Handoff
 
-Updated 2026-11-19 after visual QA fixes for menu SVG, Process connectors, and Portfolio preview microcopy. TypeScript, production build, and lint pass. Browser review was possible at about 864px wide; exact mobile and large desktop viewport checks were not available.
+Updated 2026-11-19 after implementing Contacts and Footer.
 
 ## Current state
 
-VYRA Studio is a Vite + React + TypeScript single page with a dark token set. `App` renders Hero, Services, Portfolio, then Process. Services has three service cards with inline SVG icons. Portfolio has three clearly labeled concept projects with distinct CSS/SVG previews. Process has four ordered steps with desktop, tablet 2×2, and mobile timeline treatments. The sections use responsive layouts and reduced-motion behavior.
+VYRA Studio is a Ukrainian single-page React + TypeScript + Vite site. `src/App.tsx` composes Hero, Services, Portfolio, Process, Contacts, and Footer. Sections use paired stylesheets and the existing Premium Dark + Fresh Green tokens.
 
-The hero shows the wordmark, four Ukrainian nav links, headline, supporting copy, abstract interface artwork, two Ukrainian calls to action, and a working mobile menu.
-
-Shared agent memory now lives in `AGENTS.md` and `AI-WORKSPACE/`. The older root `MEMORY.md` is kept as a changelog.
-
-There is no Git repository in this folder, so file history cannot be recovered from commits.
+Contacts has the `#contacts` anchor, a working `mailto:vyrastudio2@gmail.com` link, and a visually reserved area that explicitly says the interactive application form is planned for a later stage. No form submission is simulated. Footer uses the existing VYRA wordmark, links to all implemented sections, includes the same email, and shows the current year.
 
 ## Implemented
 
-- Vite React TypeScript app with scripts `dev`, `build`, `lint`, and `preview`.
-- Ukrainian document language and title `VYRA Studio`.
-- Design tokens and base styles in `src/styles/tokens.css` and `src/styles/base.css`.
-- Hero section with wordmark image, nav, two links, and a menu button.
-- Wordmark and geometric logo SVG files. Only the wordmark is used by the hero. The favicon file is linked from `index.html`.
-- Google Fonts stylesheet loads Manrope and Inter, with system sans-serif fallback stacks.
-- Mobile menu opens from its button, starts keyboard focus on the first link, closes on Escape (returning focus to the button), outside pointer click, navigation link activation, or desktop breakpoint. Focus moving elsewhere no longer closes the menu, and page scrolling is not locked.
-- Both mobile CTA links use a fixed 52px height. Mobile menu and toggle borders use `--color-border`; H1 line-height is 1.18.
-- Services section at `#services` with Ukrainian copy, three offerings, custom line icons, and tablet/mobile responsive card layouts.
-- Portfolio section at `#portfolio` with three concept projects, distinct website preview compositions, Ukrainian descriptions, English categories and technology labels, and explicit “Концепт” badges.
-- Process section at `#process` with four Ukrainian stages and a connected, responsive timeline.
-- Mobile menu SVG paths explicitly restore their local stroke after the global SVG reset. Tablet Process connections route through marker space and row gaps; the mobile guide is mathematically aligned to marker centers. Portfolio concept preview microcopy has been enlarged.
-- `npm run build` completed after the visual QA fixes; `dist/` contains the generated production output.
-
-An earlier root `MEMORY.md` records these code edits: tokens moved inside `:root` after a lightningcss `SyntaxError: Invalid qualified rule`; the hero logo switched from SVG `<use>` to `<img>`; `ReactNode` imports changed to `import type`. Those edits match the current source. This session did not reproduce the old build error.
+- Hero, Services, Portfolio, Process, Contacts, and Footer.
+- Responsive layouts and reduced-motion support in the sections where motion is used.
+- Manrope headings and Inter body text through Google Fonts with system fallbacks.
+- Functional in-page navigation and email links.
 
 ## Not implemented
 
-- About, Contact, and Footer sections.
-- `src/components/` and `src/hooks/`.
-- Any route other than the single page.
-- Actual section destination for `#contacts`; that hash name is ready for the future Contact section.
-- Tests.
-- Git, GitHub remote, and deployment configuration. Cloudflare Pages was only mentioned in the previous memory file.
-- A project-specific README. `README.md` is still the Vite template text.
+- About section, interactive application form, form validation, spam protection, Supabase/API integration, or other routes.
+- `src/components/` and `src/hooks/` abstractions.
+- Tests and deployment configuration.
+- Project-specific README; `README.md` remains the Vite template.
 
-## Known problems
+## Known limitations
 
-Remaining limitations and issues found by source review; the visual checks in this handoff were limited to the available 864px browser viewport.
-
-1. Hash target for the planned Contacts section does not exist yet.
-2. `className={\`hero ${className}\`}` becomes the class `hero undefined` when `className` is omitted. `App` omits it.
-3. `Hero.css` uses `var(--space-16)` inside `@media (min-width: 1024px)`. `--space-16` is not defined in `tokens.css`, so that padding declaration is invalid and the earlier padding remains.
-4. The wordmark SVG sets `fill="currentColor"` and is loaded with `<img>`. An external SVG image does not inherit the page text color. The "DIGITAL STUDIO" line uses `y="4"` in a 36px-tall viewBox, so that line sits on the top edge of the canvas. Visual result not checked in this session.
-5. `public/favicon.svg` sets `fill="none"` and `stroke="currentColor"`. How it renders as a favicon was not checked.
-6. `src/App.css`, `src/assets/react.svg`, `src/assets/vite.svg`, `src/assets/hero.png`, `src/assets/vyra-logo.svg`, and `public/icons.svg` are unused by the app.
-7. Token and base CSS comments, and the previous `AI-WORKSPACE` text before this update, still say "AI Web Studio". The UI title is VYRA Studio. The package name remains `ai-web-studio`.
-8. `tsconfig.app.json` does not enable `"strict": true`.
+- Browser verification for this task could not be completed: the in-app browser timed out opening the local Vite preview. Responsive behavior, keyboard interaction, and horizontal overflow therefore remain unverified visually in this task.
+- No automated test runner is configured.
+- Existing unrelated source issues remain as previously recorded: `Hero.css` references undefined `--space-16`; some Vite template assets/styles are unused; TypeScript `strict` is not enabled; the wordmark SVG and favicon rendering have not been fully reviewed.
 
 ## Next task
 
-Implement the planned Contact section and provide its matching anchor. Recheck mobile menu, mobile Process guide, and card layouts at exact phone and desktop breakpoints when viewport controls are available.
-
-The open product gap visible in the code is the Contact section: navigation and the primary CTA point to `#contacts`, which does not exist yet.
+Implement the actual Contacts request form as a separate agreed stage, including validation and accessible loading/success/error states, then decide the submission provider (for example, a future Supabase integration). First verify the current page at desktop, tablet, and phone widths in a reachable browser.

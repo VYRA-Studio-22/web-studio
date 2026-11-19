@@ -151,3 +151,22 @@ Checks:
 - `npm run lint` — passed (exit code 0).
 - Browser review — tablet layout was checked at about 864px wide. Process links did not cross stage text; Services and Portfolio cards appeared balanced, with no apparent overflow or forced empty height. The browser control did not provide exact mobile or desktop viewport resizing, so those sizes were not visually verified.
 - Scope — `git status` was checked; changes are limited to Hero/Process/Portfolio styles, Process markup, and the requested workspace documents.
+
+## 2026-11-19 — Contacts and Footer
+
+Goal: add the Contacts and Footer sections using the existing tokens and section architecture, with working page/email links and a clearly future-only form area.
+
+Files changed:
+
+- `src/sections/Contacts.tsx` and `src/sections/Contacts.css` — added `#contacts`, Ukrainian intro and email details, and a visual area reserved for a future application form. No form or fake submission behavior was added.
+- `src/sections/Footer.tsx` and `src/sections/Footer.css` — added the existing VYRA wordmark, links to Hero/Services/Portfolio/Process/Contacts, clickable email, and automatic current year.
+- `src/App.tsx` — appends Contacts and Footer after Process.
+- `AI-WORKSPACE/MEMORY.md`, `PROJECT_MAP.md`, `HANDOFF.md`, and `TASK_LOG.md` — synchronized project facts and documented this task.
+
+Checks:
+
+- `npx tsc --noEmit` — passed (exit code 0).
+- `npm run build` — passed; Vite production build completed.
+- `npm run lint` — passed (exit code 0, no warnings) after moving the automatic year calculation to module scope.
+- Browser preview — attempted at `http://127.0.0.1:5174/`; the browser timed out. Visual breakpoints, link activation, and overflow could not be verified in-browser.
+- `git diff --stat` and `git status --short` — checked; no commit created. Status and stats are reported in the task response.
