@@ -59,6 +59,8 @@ Map of the repository as inspected on 2026-11-19. `node_modules/` and `dist/` ex
 | `sections/Contacts.css` | Responsive two-column desktop contact layout, stacked mobile layout, panel, focus styles, and reduced-motion support using shared tokens. |
 | `sections/Footer.tsx` | Site footer with existing VYRA wordmark, links to all page sections, contact email, and current year. |
 | `sections/Footer.css` | Responsive footer layout, link hover/focus states, and shared token styling. |
+| `components/ContactForm.tsx` | Accessible Ukrainian contact form with client-side validation, inline errors, status messaging, and honeypot field. Submission is intentionally not connected. |
+| `components/ContactForm.css` | Responsive form controls, visible keyboard focus, validation feedback, and reduced-motion styling using shared tokens. |
 | `assets/vyra-wordmark.svg` | Logo used by the hero `<img>`. Text "VYRA" and "DIGITAL STUDIO". |
 | `assets/vyra-logo.svg` | Geometric V mark. Not imported. |
 | `assets/hero.png` | Vite template isometric graphic. Not imported. |
@@ -67,7 +69,7 @@ Map of the repository as inspected on 2026-11-19. `node_modules/` and `dist/` ex
 
 ## Components
 
-There is no `src/components/` directory.
+`src/components/` currently contains the reusable `ContactForm` component.
 
 ### `Hero`
 
@@ -90,7 +92,7 @@ Rendered content:
 
 `src/sections/Portfolio.tsx` exports `Portfolio`, with styling in `src/sections/Portfolio.css`. It renders `#portfolio` with three explicitly labeled concept projects, each with its own CSS/SVG website preview. The examples do not claim real clients or business results.
 
-The folders `src/components/` and `src/hooks/` from the earlier planned map were not created.
+`src/hooks/` from the earlier planned map has not been created; `src/components/` now contains `ContactForm`.
 
 ### `Process`
 
@@ -98,6 +100,10 @@ The folders `src/components/` and `src/hooks/` from the earlier planned map were
 
 ### `Contacts` and `Footer`
 
-`src/sections/Contacts.tsx` exports `Contacts`, with paired `Contacts.css`. It renders `#contacts`, contact details, and a clearly identified visual area reserved for a future application form. Email links use `mailto:vyrastudio2@gmail.com`; there is currently no form or submission logic.
+`src/sections/Contacts.tsx` exports `Contacts`, with paired `Contacts.css`. It renders `#contacts`, contact details, and embeds `ContactForm`. Email links use `mailto:vyrastudio2@gmail.com`.
 
 `src/sections/Footer.tsx` exports `Footer`, with paired `Footer.css`. It uses the existing VYRA wordmark, links to `#hero`, `#services`, `#portfolio`, `#process`, and `#contacts`, and computes the current year at module load.
+
+### `ContactForm`
+
+`src/components/ContactForm.tsx` exports `ContactForm`. It validates name and message lengths after trimming, validates email syntax and length, and treats project type as optional. On invalid submission it displays field-level errors associated by `aria-describedby` and focuses the first invalid control. A valid submission displays a truthful not-connected message; no data is transmitted. A visually hidden honeypot field is present for future server-side spam handling.

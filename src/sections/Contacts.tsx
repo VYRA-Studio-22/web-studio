@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { ContactForm } from '../components/ContactForm'
 import './Contacts.css'
 
 const CONTACT_EMAIL = 'vyrastudio2@gmail.com'
@@ -26,26 +27,20 @@ export function Contacts(): ReactNode {
             </div>
           </div>
 
-          <aside className="contacts__panel" aria-labelledby="contacts-panel-title">
+          <div className="contacts__panel" aria-labelledby="contacts-panel-title">
             <div className="contacts__panel-top">
               <span className="contacts__panel-index">01</span>
               <span className="contacts__panel-mark" aria-hidden="true">↗</span>
             </div>
-            <div className="contacts__panel-copy">
+            <div className="contacts__panel-copy contacts__panel-copy--form">
               <p className="contacts__panel-eyebrow">Перший крок</p>
               <h3 className="contacts__panel-title" id="contacts-panel-title">
-                Форма заявки
+                Розкажіть про ваш проєкт
               </h3>
-              <p className="contacts__panel-note">
-                Інтерактивну форму буде додано наступним етапом. А поки напишіть
-                нам напряму — будемо раді обговорити ваш проєкт.
-              </p>
-              <a className="contacts__email-cta" href={`mailto:${CONTACT_EMAIL}`}>
-                Написати нам <span aria-hidden="true">↗</span>
-              </a>
+              <ContactForm />
             </div>
             <span className="contacts__panel-rule" aria-hidden="true" />
-          </aside>
+          </div>
         </div>
       </div>
     </section>

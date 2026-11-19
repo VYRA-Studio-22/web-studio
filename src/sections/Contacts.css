@@ -140,6 +140,11 @@
   margin-top: var(--space-10);
 }
 
+.contacts__panel-copy--form {
+  max-width: none;
+  margin-top: var(--space-6);
+}
+
 .contacts__panel-eyebrow {
   margin-bottom: var(--space-3);
 }
@@ -148,6 +153,11 @@
   margin-bottom: var(--space-3);
   font-size: var(--font-size-2xl);
   letter-spacing: -0.03em;
+}
+
+.contacts__panel-copy--form .contacts__panel-title {
+  margin-bottom: 0;
+  font-size: var(--font-size-2xl);
 }
 
 .contacts__panel-note {

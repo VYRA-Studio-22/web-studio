@@ -103,7 +103,7 @@ Observed in the current code:
 - Navigation and calls to action are in-page anchor links; the contact email uses `mailto:`. No shared button component is implemented. `base.css` defines `.btn` classes used by Hero.
 - `public/favicon.svg` is the icon linked from `index.html`. `src/assets/vyra-logo.svg` is a similar geometric mark and is not imported.
 
-Not present: `src/components/`, `src/hooks/`, About section, request form, backend/API client, and routes. Implemented section targets are `#hero`, `#services`, `#portfolio`, `#process`, and `#contacts`.
+Not present: `src/hooks/`, About section, backend/API client, and routes. `src/components/ContactForm.tsx` is a standalone form component embedded in Contacts. Implemented section targets are `#hero`, `#services`, `#portfolio`, `#process`, and `#contacts`.
 
 ## Accepted constraints
 
@@ -117,4 +117,4 @@ From the current agent rules and the earlier project notes that are still in for
 - Do not add unused dependencies.
 - Do not expose secrets.
 - Do not report a verification that was not actually run.
-- Contacts currently provides direct email contact and an explicitly marked visual area reserved for a future request form. It does not collect or submit form data.
+- Contacts provides direct email contact and a client-side validated request form. The form does not transmit data; its visible response says that sending is not connected. The honeypot is only a frontend field and does not provide effective bot protection without server-side validation.

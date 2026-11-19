@@ -170,3 +170,23 @@ Checks:
 - `npm run lint` — passed (exit code 0, no warnings) after moving the automatic year calculation to module scope.
 - Browser preview — attempted at `http://127.0.0.1:5174/`; the browser timed out. Visual breakpoints, link activation, and overflow could not be verified in-browser.
 - `git diff --stat` and `git status --short` — checked; no commit created. Status and stats are reported in the task response.
+
+## 2026-11-19 — Contact form frontend
+
+Goal: add a reusable, accessible client-side application form to Contacts without connecting a submission service.
+
+Files changed:
+
+- `src/components/ContactForm.tsx` — added name, email, optional project type, message, client-side validation, inline errors linked through `aria-describedby`/`aria-invalid`, first-invalid-field focus, four typed status values, and a hidden honeypot. Valid submit reports that sending is not connected; it does not show success or transmit data.
+- `src/components/ContactForm.css` — added responsive token-based fields, keyboard focus states, error styling, honeypot hiding, and reduced-motion handling.
+- `src/sections/Contacts.tsx` — embedded `ContactForm` in the existing highlighted contact panel, replacing the future-form placeholder.
+- `src/sections/Contacts.css` — adjusted form-panel heading spacing for the embedded component.
+- `AI-WORKSPACE/PROJECT_MAP.md`, `HANDOFF.md`, and `MEMORY.md` — recorded component responsibilities and form limitations.
+
+Checks:
+
+- `npx tsc --noEmit` — passed (exit code 0).
+- `npm run build` — passed; Vite production build completed.
+- `npm run lint` — passed (exit code 0, no warnings).
+- Browser interaction/responsive verification — not performed in this task.
+- Git status and diff stats — checked; no commit created.
