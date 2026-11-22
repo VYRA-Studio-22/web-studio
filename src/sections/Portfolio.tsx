@@ -1,34 +1,37 @@
 import type { ReactNode } from 'react'
 import './Portfolio.css'
 
-const PROJECTS = [
+type ProjectItem = {
+  number: string
+  category: string
+  title: string
+  description: string
+  technologies: string[]
+  visual: ReactNode
+  url?: string
+  badge?: string
+}
+
+const PROJECTS: ProjectItem[] = [
   {
     number: '01',
     category: 'Business Website',
-    title: 'Автосервіс нового покоління',
+    title: 'Auto-Ritm — автосервіс нового покоління',
     description:
-      'Концепт сучасного сайту автосервісу з акцентом на довіру, послуги та онлайн-запис.',
+      'Сучасний сайт автосервісу з акцентом на довіру, прозорий кошторис, послуги та онлайн-запис.',
     technologies: ['React', 'TypeScript'],
+    url: 'https://vyra-studio-22.github.io/Portfolio_Auto-Ritm/',
+    badge: 'Реальний проєкт',
     visual: (
-      <div className="portfolio__mock portfolio__mock--auto" aria-hidden="true">
-        <div className="portfolio__mock-nav">
-          <span className="portfolio__mock-brand">GARAGE<span>.</span></span>
-          <span className="portfolio__mock-menu"><i /><i /><i /></span>
-        </div>
-        <div className="portfolio__auto-layout">
-          <div className="portfolio__auto-copy">
-            <span className="portfolio__mock-overline">СЕРВІС · ДОВІРА · ЯКІСТЬ</span>
-            <span className="portfolio__auto-title">Ваш автомобіль<br />у надійних руках</span>
-            <span className="portfolio__mock-button">Записатися на сервіс <b>↗</b></span>
-          </div>
-          <svg className="portfolio__car" viewBox="0 0 280 128" fill="none">
-            <path d="m35 83 12-29c3-7 8-11 16-13l38-9 26-25c4-4 9-6 15-6h47c10 0 18 4 24 12l28 37 20 8c7 3 11 9 11 17v15h-21M37 90H18V73c0-8 5-14 13-16l16-3" />
-            <path d="m108 33-13 31h127l-24-32c-3-4-8-7-14-7h-54c-9 0-16 3-22 8ZM47 65h205" />
-            <circle cx="76" cy="91" r="17" /><circle cx="221" cy="91" r="17" />
-            <circle cx="76" cy="91" r="6" /><circle cx="221" cy="91" r="6" />
-          </svg>
-        </div>
-        <div className="portfolio__auto-footer"><span>01 / 03</span><span /><span>Планове обслуговування</span></div>
+      <div className="portfolio__mock portfolio__mock--image">
+        <img
+          src="/images/portfolio/auto-ritm-preview.png"
+          alt="Головна сторінка сайту автосервісу Auto-Ritm з онлайн-записом та переліком послуг"
+          className="portfolio__image"
+          loading="lazy"
+          width={1024}
+          height={680}
+        />
       </div>
     ),
   },
@@ -39,6 +42,7 @@ const PROJECTS = [
     description:
       'Мінімалістична презентація студії інтер’єрного дизайну з акцентом на візуальну естетику та портфоліо.',
     technologies: ['React', 'TypeScript'],
+    badge: 'Концепт',
     visual: (
       <div className="portfolio__mock portfolio__mock--interior" aria-hidden="true">
         <div className="portfolio__mock-nav">
@@ -68,6 +72,7 @@ const PROJECTS = [
     description:
       'Динамічний концепт лендингу фітнес-студії для презентації тренувань та залучення нових клієнтів.',
     technologies: ['React', 'TypeScript'],
+    badge: 'Концепт',
     visual: (
       <div className="portfolio__mock portfolio__mock--fitness" aria-hidden="true">
         <div className="portfolio__mock-nav">
@@ -88,14 +93,7 @@ const PROJECTS = [
       </div>
     ),
   },
-] satisfies Array<{
-  number: string
-  category: string
-  title: string
-  description: string
-  technologies: string[]
-  visual: ReactNode
-}>
+]
 
 export function Portfolio(): ReactNode {
   return (
@@ -115,27 +113,61 @@ export function Portfolio(): ReactNode {
         </header>
 
         <div className="portfolio__grid">
-          {PROJECTS.map((project) => (
-            <article className="portfolio__card" key={project.number}>
-              <div className="portfolio__preview">
-                {project.visual}
-                <span className="portfolio__concept">Концепт</span>
-              </div>
-              <div className="portfolio__card-body">
-                <div className="portfolio__meta">
-                  <span className="portfolio__category">{project.category}</span>
-                  <span className="portfolio__number">{project.number}</span>
+          {PROJECTS.map((project) => {
+            const cardInner = (
+              <>
+                <div className="portfolio__preview">
+                  {project.visual}
+                  <span
+                    className={`portfolio__concept${project.url ? ' portfolio__concept--live' : ''}`}
+                  >
+                    {project.badge ?? 'Концепт'}
+                  </span>
                 </div>
-                <h3 className="portfolio__project-title">{project.title}</h3>
-                <p className="portfolio__description">{project.description}</p>
-                <ul className="portfolio__tech" aria-label="Технології">
-                  {project.technologies.map((technology) => (
-                    <li key={technology}>{technology}</li>
-                  ))}
-                </ul>
-              </div>
-            </article>
-          ))}
+                <div className="portfolio__card-body">
+                  <div className="portfolio__meta">
+                    <span className="portfolio__category">{project.category}</span>
+                    <span className="portfolio__number">{project.number}</span>
+                  </div>
+                  <h3 className="portfolio__project-title">
+                    {project.title}
+                    {project.url ? (
+                      <span className="portfolio__external-arrow" aria-hidden="true">
+                        {' '}↗
+                      </span>
+                    ) : null}
+                  </h3>
+                  <p className="portfolio__description">{project.description}</p>
+                  <ul className="portfolio__tech" aria-label="Технології">
+                    {project.technologies.map((technology) => (
+                      <li key={technology}>{technology}</li>
+                    ))}
+                  </ul>
+                </div>
+              </>
+            )
+
+            if (project.url) {
+              return (
+                <a
+                  key={project.number}
+                  href={project.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="portfolio__card portfolio__card--link"
+                  aria-label={`${project.title} — відкрити сайт у новій вкладці`}
+                >
+                  {cardInner}
+                </a>
+              )
+            }
+
+            return (
+              <article className="portfolio__card" key={project.number}>
+                {cardInner}
+              </article>
+            )
+          })}
         </div>
       </div>
     </section>

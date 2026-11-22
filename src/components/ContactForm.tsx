@@ -5,6 +5,10 @@ type FieldName = 'name' | 'email' | 'projectType' | 'message'
 type FormValues = Record<FieldName, string> & { website: string }
 type FormStatus = 'idle' | 'submitting' | 'success' | 'error'
 type FormErrors = Partial<Record<FieldName, string>>
+type SubmissionError = 'duplicate' | 'rateLimited' | 'unavailable' | 'honeypot' | null
+
+const SUBMIT_CONTACT_URL =
+  'https://bmvslvtjcvlpjdxhvfwn.supabase.co/functions/v1/submit-contact'
 
 const INITIAL_VALUES: FormValues = {
   name: '',
@@ -21,7 +25,11 @@ const FIELD_IDS: Record<FieldName, string> = {
   message: 'contact-message',
 }
 
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/u
+
+function characterCount(value: string): number {
+  return Array.from(value).length
+}
 
 function validate(values: FormValues): FormErrors {
   const errors: FormErrors = {}
@@ -29,15 +37,19 @@ function validate(values: FormValues): FormErrors {
   const email = values.email.trim()
   const message = values.message.trim()
 
-  if (name.length < 2 || name.length > 80) {
+  const nameLength = characterCount(name)
+  const emailLength = characterCount(email)
+  const messageLength = characterCount(message)
+
+  if (nameLength < 2 || nameLength > 80) {
     errors.name = 'Введіть ім’я від 2 до 80 символів.'
   }
 
-  if (email.length > 254 || !EMAIL_PATTERN.test(email)) {
+  if (emailLength > 254 || !EMAIL_PATTERN.test(email)) {
     errors.email = 'Введіть коректну адресу електронної пошти (до 254 символів).'
   }
 
-  if (message.length < 20 || message.length > 2000) {
+  if (messageLength < 20 || messageLength > 2000) {
     errors.message = 'Повідомлення має містити від 20 до 2000 символів.'
   }
 
@@ -48,6 +60,7 @@ export function ContactForm(): ReactNode {
   const [values, setValues] = useState<FormValues>(INITIAL_VALUES)
   const [errors, setErrors] = useState<FormErrors>({})
   const [status, setStatus] = useState<FormStatus>('idle')
+  const [submissionError, setSubmissionError] = useState<SubmissionError>(null)
   const nameRef = useRef<HTMLInputElement>(null)
   const emailRef = useRef<HTMLInputElement>(null)
   const projectTypeRef = useRef<HTMLSelectElement>(null)
@@ -57,12 +70,15 @@ export function ContactForm(): ReactNode {
     setValues((current) => ({ ...current, [field]: value }))
     setErrors((current) => ({ ...current, [field]: undefined }))
     setStatus('idle')
+    setSubmissionError(null)
   }
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    if (status === 'submitting') return
 
     if (values.website.trim()) {
+      setSubmissionError('honeypot')
       setStatus('error')
       return
     }
@@ -83,11 +99,56 @@ export function ContactForm(): ReactNode {
       }
       refs[firstInvalidField].current?.focus()
       setStatus('idle')
+      setSubmissionError(null)
       return
     }
 
-    // The backend is not connected yet, so a valid submission must not appear successful.
-    setStatus('error')
+    const publishableKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY
+    if (!publishableKey) {
+      setSubmissionError('unavailable')
+      setStatus('error')
+      return
+    }
+
+    setSubmissionError(null)
+    setStatus('submitting')
+
+    try {
+      const response = await fetch(SUBMIT_CONTACT_URL, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${publishableKey}`,
+          apikey: publishableKey,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: values.name.trim(),
+          email: values.email.trim(),
+          project_type: values.projectType || null,
+          message: values.message.trim(),
+          website: values.website,
+        }),
+      })
+
+      if (response.status === 201) {
+        setValues(INITIAL_VALUES)
+        setErrors({})
+        setStatus('success')
+        return
+      }
+
+      if (response.status === 409) {
+        setSubmissionError('duplicate')
+      } else if (response.status === 429) {
+        setSubmissionError('rateLimited')
+      } else {
+        setSubmissionError('unavailable')
+      }
+      setStatus('error')
+    } catch {
+      setSubmissionError('unavailable')
+      setStatus('error')
+    }
   }
 
   const describedBy = (field: FieldName) =>
@@ -104,6 +165,7 @@ export function ContactForm(): ReactNode {
             name="name"
             type="text"
             autoComplete="name"
+            disabled={status === 'submitting'}
             value={values.name}
             onChange={(event) => updateField('name', event.target.value)}
             aria-invalid={Boolean(errors.name)}
@@ -123,6 +185,7 @@ export function ContactForm(): ReactNode {
             type="email"
             autoComplete="email"
             maxLength={254}
+            disabled={status === 'submitting'}
             value={values.email}
             onChange={(event) => updateField('email', event.target.value)}
             aria-invalid={Boolean(errors.email)}
@@ -139,6 +202,7 @@ export function ContactForm(): ReactNode {
             ref={projectTypeRef}
             id={FIELD_IDS.projectType}
             name="projectType"
+            disabled={status === 'submitting'}
             value={values.projectType}
             onChange={(event) => updateField('projectType', event.target.value)}
           >
@@ -157,6 +221,7 @@ export function ContactForm(): ReactNode {
             id={FIELD_IDS.message}
             name="message"
             rows={5}
+            disabled={status === 'submitting'}
             value={values.message}
             onChange={(event) => updateField('message', event.target.value)}
             aria-invalid={Boolean(errors.message)}
@@ -176,6 +241,7 @@ export function ContactForm(): ReactNode {
           type="text"
           tabIndex={-1}
           autoComplete="off"
+          disabled={status === 'submitting'}
           value={values.website}
           onChange={(event) => setValues((current) => ({ ...current, website: event.target.value }))}
         />
@@ -191,9 +257,15 @@ export function ContactForm(): ReactNode {
 
       <p className="contact-form__status" role="status" aria-live="polite">
         {status === 'success' && 'Дякуємо! Вашу заявку надіслано.'}
-        {status === 'error' && (values.website.trim()
-          ? 'Не вдалося обробити заявку.'
-          : 'Форма поки не підключена. Напишіть нам на vyrastudio2@gmail.com.')}
+        {status === 'submitting' && 'Надсилаємо вашу заявку…'}
+        {status === 'error' && submissionError === 'duplicate' &&
+          'Таку заявку вже отримано. Якщо потрібна допомога, напишіть нам на vyrastudio2@gmail.com.'}
+        {status === 'error' && submissionError === 'rateLimited' &&
+          'Забагато заявок за короткий час. Спробуйте пізніше або напишіть нам на vyrastudio2@gmail.com.'}
+        {status === 'error' && submissionError === 'unavailable' &&
+          'Не вдалося надіслати заявку. Спробуйте ще раз або напишіть нам на vyrastudio2@gmail.com.'}
+        {status === 'error' && submissionError === 'honeypot' &&
+          'Не вдалося обробити заявку.'}
       </p>
     </form>
   )

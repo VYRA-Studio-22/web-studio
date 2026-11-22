@@ -190,3 +190,175 @@ Checks:
 - `npm run lint` — passed (exit code 0, no warnings).
 - Browser interaction/responsive verification — not performed in this task.
 - Git status and diff stats — checked; no commit created.
+
+## 2026-11-20 — Contact submission Edge Function
+
+Goal: implement the server-side `submit-contact` endpoint without exposing privileged credentials, changing the migration/cloud database, or connecting email services.
+
+Files changed:
+
+- `supabase/functions/submit-contact/index.ts` — replaced the generated greeting stub with POST JSON processing, streamed 16 KiB request cap, input normalization and server-side validation, honeypot rejection, persistent same-payload duplicate rejection and per-email throttling, allowlisted insertion through `ctx.supabaseAdmin`, generic database failure responses, and non-PII static logs. `withSupabase` uses publishable-key auth and its built-in CORS/OPTIONS handling.
+- `AI-WORKSPACE/MEMORY.md` — documented the Edge Function and clarified that frontend form integration remains absent.
+- `AI-WORKSPACE/HANDOFF.md` — recorded behavior, limitations, and deployment requirements.
+
+Checks:
+
+- `npx tsc --noEmit` — passed for the frontend project (exit code 0); this does not include Deno function source.
+- `npm run build` — passed.
+- Strict TypeScript compile of the Edge Function source with a temporary local declaration stub — passed. This is a source-level check, not a Deno check; the temporary file was removed.
+- `npm run lint` — attempted, but Oxlint failed to load its Windows native binding because Application Control blocked the `.node` binary; no WASI fallback is installed. No dependencies were changed.
+- Deno check and HTTP tests (OPTIONS, invalid payloads, honeypot, successful database insert) — not run: Deno is absent and the local Supabase stack cannot start because Docker Desktop's Linux engine is unavailable.
+- `npx supabase --version` — passed (3.2.0). `npx supabase status` confirmed local stack unavailable. No function deployment or cloud database operation was performed.
+- Rate-limit design — limited to persisted per-email throttling using existing rows; no in-memory limiter, migration, extra table, or external service added. This limiter is not atomic or IP-based.
+
+## 2026-11-20 — Form audit fixes & validation alignment
+
+Goal: address audit findings by adding a server-side whitelist for `project_type`, adding `Allow: POST, OPTIONS` to 405 response, aligning frontend text length calculation with Unicode code points, and verifying safe honeypot handling without connecting `fetch` or changing SQL schema/deployments.
+
+Files changed:
+
+- `supabase/functions/submit-contact/index.ts`:
+  - Added `ALLOWED_PROJECT_TYPES` Set (`landing`, `business-website`, `redesign`, `other`).
+  - Added whitelist validation rejecting unknown project types with 400 Bad Request.
+  - Added support for `payload.project_type ?? payload.projectType` alias mapping.
+  - Added `Allow: POST, OPTIONS` header to 405 Method Not Allowed response.
+  - Preserved `withSupabase` and `context.supabaseAdmin` architecture, 16 KiB streamed body bound, and RLS bypass isolation.
+  - Maintained honeypot rejection without persisting to DB or returning fake success.
+- `src/components/ContactForm.tsx`:
+  - Added `characterCount(value)` (`Array.from(value).length`) counting Unicode code points identically to backend.
+  - Updated `validate()` to use `characterCount` for `name`, `email`, and `message`.
+  - Added `/u` flag to `EMAIL_PATTERN` matching backend regex.
+  - Kept frontend submission disconnected (no `fetch`), preserving existing unconnected status behavior.
+- `AI-WORKSPACE/HANDOFF.md` and `AI-WORKSPACE/TASK_LOG.md` — updated status and recorded verification results.
+
+Checks:
+
+- `npx tsc --noEmit` — passed (exit code 0).
+- `npm run build` — passed (exit code 0, 31 modules transformed, clean production build).
+- `git diff --check` — passed (exit code 0, no trailing whitespace or merge conflict markers).
+- Edge Function runtime tests — not run: Deno is not installed in the environment and Docker Desktop is unavailable; function logic was verified via static code analysis.
+- Scope — no dependencies added, no SQL migration modified or executed, no deployment executed, no git commit created.
+
+## 2026-11-22 — Documentation and Git configuration audit
+
+Goal: update and synchronize project documentation (`HANDOFF.md`, `MEMORY.md`, `PROJECT_MAP.md`) following the Supabase Edge Function implementation and cloud database registration, ensure `.gitignore` completely prevents `.env*` secrets and `supabase/.temp/` from being tracked, verify `.npmrc` has no credentials, and confirm no secrets exist in tracked files without modifying React components, Edge Function, SQL schema, or creating commits.
+
+Files changed:
+
+- `AI-WORKSPACE/HANDOFF.md` — restored full site architecture details (Hero, Services, Portfolio, Process, Contacts, Footer, typography, tokens, navigation); documented `ContactForm` validation, honeypot, and disconnected status; documented `submit-contact` Edge Function architecture; explicitly recorded that `contact_requests` was created manually via Supabase SQL Editor and the migration was registered as applied via `supabase migration repair --status applied`; stated that the function is not deployed or tested in runtime; documented backend limitations and next deployment steps.
+- `AI-WORKSPACE/MEMORY.md` — clarified absence of frontend API client / network wiring for `ContactForm`; explicitly mandated that secret keys (service_role, db credentials) and local `.env` files must never be committed to Git; recorded SQL Editor table creation and `migration repair` registration; preserved site structure and design tokens.
+- `AI-WORKSPACE/PROJECT_MAP.md` — added `supabase/` entry in root table and documented `supabase/config.toml`, `supabase/.gitignore`, migration file, Edge Function files, and `.temp/` cache.
+- `.gitignore` — added explicit ignore rules for `.env`, `.env.*`, `!.env.example`, `.env.keys`, and `supabase/.temp/`.
+- `AI-WORKSPACE/TASK_LOG.md` — recorded documentation corrections, Git configuration audit, and verification checks.
+
+Checks:
+
+- `git check-ignore -v` — verified that `.env`, `.env.local`, `.env.production`, `.env.development`, `.env.staging`, `.env.keys`, `supabase/.temp`, and `supabase/.temp/project-ref` are ignored, and `!.env.example` is retained as an unignored template.
+- Static credential audit of `supabase/functions/submit-contact/.npmrc` — confirmed file contains only 3 comment lines and no tokens, credentials, or registries.
+- Secret scan across git-tracked files (`git grep -i -E ...`) — confirmed zero API keys, secrets, tokens, or credentials in tracked repository files.
+- `npx tsc --noEmit` — passed (exit code 0).
+- `npm run build` — passed (exit code 0, Vite build completed cleanly).
+- `git diff --check` — passed (exit code 0, no whitespace errors or conflict markers).
+- `git status --short` — verified working copy status.
+- Scope constraints — no React components modified, no Edge Function code modified, no SQL migration modified/run, no dependencies installed, no deployment executed, and no git commit created.
+
+## 2026-11-22 — Documentation corrections after read-only audit
+
+Goal: align the handoff and project map with the current source, correct the documented Supabase Edge Function environment variables, and preserve the recorded cloud table/migration history.
+
+Files changed:
+
+- `AI-WORKSPACE/HANDOFF.md` — corrected the Portfolio concepts and Process stage names against their components; verified the remaining section descriptions against `App.tsx` and section sources; clarified that ContactForm is rendered but sends no data; documented standard platform Supabase variables and local fallback names separately from future browser-visible Vite variables; retained the reported manual SQL Editor creation and `migration repair` registration history.
+- `AI-WORKSPACE/PROJECT_MAP.md` — documented the real App section order, Hero-owned header and `<main>`, and the actual embedded but unconnected ContactForm.
+- `AI-WORKSPACE/TASK_LOG.md` — recorded this documentation-only correction and its checks.
+
+Checks:
+
+- Source comparison — read `src/App.tsx`, all files under `src/sections/` and `src/components/`, `src/styles/`, `supabase/functions/submit-contact/index.ts`, and `supabase/config.toml`; section copy/order and described form/backend status were matched to current code. Migration history is preserved as a previously reported action, not independently verified against cloud state.
+- `git diff --check` — passed (exit code 0; only Git line-ending conversion warnings for already modified working-tree files).
+- `git status --short` — checked; this task changed only the three documentation files listed above, alongside existing unrelated working-tree changes.
+- No React/TypeScript or Edge Function source, SQL, database, dependencies, or deployment were changed or used.
+- No runtime verification was performed.
+
+## 2026-11-22 — Markdown and project map date correction
+
+Goal: verify the handoff heading formatting and bring the project map inspection date up to date.
+
+Files changed:
+
+- `AI-WORKSPACE/PROJECT_MAP.md` — updated the map's inspection date to 2026-11-22.
+- `AI-WORKSPACE/TASK_LOG.md` — recorded this documentation-only correction. The `Implemented` heading in `HANDOFF.md` is already a correctly formatted level-two heading.
+
+Checks:
+
+- `git diff --check` — passed (exit code 0; Git emitted only line-ending conversion warnings for existing working-tree edits).
+- `git status --short` — checked; unrelated prior changes remain present.
+- No application source, backend function, SQL, database, dependencies, or deployment were changed or used.
+
+## 2026-11-22 — Atomic contact request rate limiting
+
+Goal: prevent concurrent requests from bypassing the per-email duplicate/rate limit by moving duplicate check, 3-per-15-minute limit check, and insertion into one transaction-scoped PostgreSQL function.
+
+Files changed:
+
+- `supabase/migrations/20261122230000_atomic_contact_request_rate_limit.sql` — creates `public.submit_contact_request` as `SECURITY DEFINER` with a restricted `pg_catalog, pg_temp` search path, transaction advisory lock keyed by normalized email, the existing duplicate and 3-per-15-minute checks, same-transaction insert, and `accepted` / `duplicate` / `rate_limited` status results. Revokes execute from `PUBLIC`, `anon`, `authenticated`, and `service_role`, then grants execute only to `service_role`.
+- `supabase/functions/submit-contact/index.ts` — replaces separate duplicate/rate queries and insert with `context.supabaseAdmin.rpc("submit_contact_request", ...)`; maps the three expected statuses to 201/409/429 and returns generic errors for RPC failures or unexpected statuses. Existing request limits, validation, honeypot, and generic error handling remain.
+- `AI-WORKSPACE/HANDOFF.md` — documents transactional flow, privileges, status mapping, and that the new migration remains unapplied and untested in runtime.
+- `AI-WORKSPACE/MEMORY.md` — records the backend architectural change to atomic database-side enforcement.
+- `AI-WORKSPACE/PROJECT_MAP.md` — adds the new migration to the repository map.
+- `AI-WORKSPACE/TASK_LOG.md` — records implementation and checks.
+
+Checks:
+
+- `npx tsc --noEmit` — passed (exit code 0).
+- `npm run build` — passed (Vite production build completed).
+- `git diff --check` — passed (exit code 0; Git emitted line-ending conversion warnings for pre-existing edited files).
+- `npx supabase config validate` — passed; `supabase/config.toml` is valid.
+- SQL permissions and function security — statically inspected migration: restricted `search_path`, transaction advisory lock, revoke/grant statements as required. Not queried against a running database.
+- Status handling — statically inspected Edge Function mapping for `accepted`, `duplicate`, and `rate_limited` to 201, 409, and 429 respectively.
+- PostgreSQL runtime, concurrent HTTP requests, migration application, and deployed endpoint — not tested. No migration or deployment was run.
+- No frontend, design, other sections, dependencies, or Git commit were changed.
+
+## 2026-11-22 — Connect contact form to Supabase Edge Function
+
+Goal: connect the existing ContactForm to the user-reported active production `submit-contact` endpoint using only a Vite-exposed publishable key.
+
+Files changed:
+
+- `src/components/ContactForm.tsx` — added JSON POST with `Authorization: Bearer` and `apikey` headers using `VITE_SUPABASE_PUBLISHABLE_KEY`; retained client validation and honeypot; added loading, success, duplicate, rate-limit, and generic network/server handling; clears form values only on HTTP 201.
+- `.env.example` — documents `VITE_SUPABASE_PUBLISHABLE_KEY` with no key value.
+- `AI-WORKSPACE/HANDOFF.md` — documented form API behavior, deployment state as reported by the user, required frontend env configuration, and lack of live request verification.
+- `AI-WORKSPACE/MEMORY.md` — updated the architecture record to note native fetch integration and the public key boundary.
+- `AI-WORKSPACE/PROJECT_MAP.md` — documented the env example and connected ContactForm responsibility.
+- `AI-WORKSPACE/TASK_LOG.md` — recorded this task and checks.
+
+Checks:
+
+- `git check-ignore -v .env.local` — passed; `.gitignore` pattern `.env.*` ignores the local file.
+- `npx tsc --noEmit` — passed (exit code 0).
+- `npm run build` — passed (Vite production build completed).
+- `git diff --check` — passed (exit code 0; only line-ending conversion warnings for already modified files).
+- No live submission was made; production endpoint status and applied migrations are based on user-provided context, not independently verified here.
+- No deployment, migration, dependency installation, or Git commit was performed.
+
+## 2026-11-22 — Auto-Ritm Portfolio card update with real screenshot
+
+Goal: update the auto service card in the Portfolio section from an educational concept to the live Auto-Ritm project (`https://vyra-studio-22.github.io/Portfolio_Auto-Ritm/`), capture a real desktop screenshot of the site via browser subagent, make the entire card clickable opening in a new tab (`target="_blank"`, `rel="noopener noreferrer"`), add clear hover and focus feedback, and preserve the responsive design and other concept cards.
+
+Files changed:
+
+- `public/images/portfolio/auto-ritm-preview.png` — saved actual desktop hero screenshot captured from the live Auto-Ritm website.
+- `src/sections/Portfolio.tsx` — updated project 01 to `Auto-Ritm — автосервіс нового покоління` with link `https://vyra-studio-22.github.io/Portfolio_Auto-Ritm/`, descriptive alt text, external arrow indicator, and `Реальний проєкт` badge; rendered linkable cards as interactive `<a>` tags with `target="_blank"` and `rel="noopener noreferrer"`; preserved static `<article>` and SVG/CSS mock rendering for Interior and Fitness concepts.
+- `src/sections/Portfolio.css` — added `.portfolio__card--link`, `.portfolio__external-arrow`, `.portfolio__mock--image`, `.portfolio__image`, and `.portfolio__concept--live` with hover lift, accent glow, focus-visible outline, and reduced-motion support; preserved responsive grid and stacked mobile layouts.
+- `AI-WORKSPACE/PROJECT_MAP.md` — documented the new public screenshot asset and updated Portfolio card structure.
+- `AI-WORKSPACE/HANDOFF.md` — updated the Portfolio section description reflecting the live Auto-Ritm project.
+- `AI-WORKSPACE/TASK_LOG.md` — recorded this task and verification results.
+
+Checks:
+
+- Screenshot capture — captured real desktop viewport (1024x680) from `https://vyra-studio-22.github.io/Portfolio_Auto-Ritm/` via browser subagent (verified by host fact `visited_origins: https://vyra-studio-22.github.io`).
+- `npx tsc --noEmit` — passed (exit code 0).
+- `npm run build` — passed (exit code 0, 31 modules transformed, clean production build).
+- `git diff --check` — passed (exit code 0).
+- `git status --short` — verified working tree status; no commits created.
+- Scope constraints — no changes to Auto-Ritm itself, other VYRA Studio sections, or the Interior/Fitness cards; no new dependencies installed.

@@ -43,7 +43,8 @@ Not present in the source:
 - A state library
 - A component library
 - A test runner
-- Environment files or API clients
+- Supabase client SDK or dedicated HTTP client (the contact form uses native `fetch`)
+- Environment files or secrets committed to the repository (all `.env`, `.env.*`, and `.env.keys` files are strictly gitignored)
 - Git metadata and remotes are present in the current workspace.
 - A deployment config file
 
@@ -103,7 +104,12 @@ Observed in the current code:
 - Navigation and calls to action are in-page anchor links; the contact email uses `mailto:`. No shared button component is implemented. `base.css` defines `.btn` classes used by Hero.
 - `public/favicon.svg` is the icon linked from `index.html`. `src/assets/vyra-logo.svg` is a similar geometric mark and is not imported.
 
-Not present: `src/hooks/`, About section, backend/API client, and routes. `src/components/ContactForm.tsx` is a standalone form component embedded in Contacts. Implemented section targets are `#hero`, `#services`, `#portfolio`, `#process`, and `#contacts`.
+Not present: `src/hooks/`, About section, and routes. Implemented section targets are `#hero`, `#services`, `#portfolio`, `#process`, and `#contacts`.
+
+Backend and database integration state:
+- Frontend contact form: `src/components/ContactForm.tsx` posts JSON to the deployed `submit-contact` Edge Function using the public `VITE_SUPABASE_PUBLISHABLE_KEY` in `Authorization` and `apikey` headers. It preserves client validation and honeypot handling, maps accepted/duplicate/rate-limited outcomes, and clears fields only after HTTP 201. No secret key is used in the browser.
+- Edge Function: `supabase/functions/submit-contact/index.ts` is a server-side Supabase Edge Function using `@supabase/server` and `withSupabase`. It enforces a 16 KiB streaming request limit, strict allowlist validation for `project_type`, honeypot rejection, and invokes `public.submit_contact_request` through `context.supabaseAdmin`. The PostgreSQL function serializes per-normalized-email duplicate/rate-limit checks and insertion using a transaction advisory lock. It is executable only by `service_role`. Neither the migration nor function has been runtime-tested or deployed as part of this work.
+- Database & Migration: Table `public.contact_requests` was created manually via the Supabase SQL Editor in the cloud project. The migration file `supabase/migrations/20261120220000_create_contact_requests.sql` was registered as applied using `supabase migration repair --status applied`, not executed via CLI migration commands.
 
 ## Accepted constraints
 
@@ -115,6 +121,7 @@ From the current agent rules and the earlier project notes that are still in for
 - Do not overwrite existing work without reading it.
 - Do not delete existing behavior without approval.
 - Do not add unused dependencies.
-- Do not expose secrets.
+- Do not expose secrets or commit local environment files: secret keys (such as Supabase `service_role` / server secret keys, database credentials, private API tokens) and local environment files (`.env`, `.env.*`, `.env.keys`) must NEVER be committed to Git or exposed in client bundles. Only the public publishable / anon key may ever be passed to the frontend, and local configuration must remain strictly gitignored.
 - Do not report a verification that was not actually run.
-- Contacts provides direct email contact and a client-side validated request form. The form does not transmit data; its visible response says that sending is not connected. The honeypot is only a frontend field and does not provide effective bot protection without server-side validation.
+- Contacts provides direct email contact and a validated request form connected to the server-side Edge Function. The honeypot is only a frontend affordance; server-side honeypot validation remains authoritative.
+- The contact Edge Function is public to callers with the project publishable key, performs server-side validation, and writes through the server-only Supabase admin context. `contact_requests` has RLS enabled and no public policies. No email delivery is implemented.
